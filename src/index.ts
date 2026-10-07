@@ -7,3 +7,4 @@ export * from './errors.js';
 export * from './media.js';
 export * from './orders.js';
 export * from './payments.js';
+export * from './tenant.js';
