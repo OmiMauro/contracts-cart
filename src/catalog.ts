@@ -9,6 +9,14 @@ export enum ProductStatus {
 export const PRODUCT_SORTS = ['newest', 'price-asc', 'price-desc'] as const;
 export type ProductSort = (typeof PRODUCT_SORTS)[number];
 
+/** A product reports `lowStock` when this many units or fewer remain. */
+export const LOW_STOCK_THRESHOLD = 5;
+
+export const PRODUCT_SEARCH = {
+  minLength: 2,
+  maxLength: 80,
+} as const;
+
 export const PRODUCT_LIMITS = {
   variants: 100,
   images: 20,
@@ -96,6 +104,8 @@ export interface StorefrontProduct {
   priceMin: Money;
   priceMax: Money;
   available: boolean;
+  /** Units left in total; only present when 1 to `LOW_STOCK_THRESHOLD` remain on a tracked product. */
+  lowStock?: number;
   seoTitle?: string;
   seoDescription?: string;
 }
@@ -118,11 +128,15 @@ export interface StorefrontProductSummary {
   name: string;
   slug: string;
   image?: ProductImage;
+  /** The second photo, shown when a shopper hovers the card. */
+  hoverImage?: ProductImage;
   priceMin: Money;
   priceMax: Money;
   /** Highest "was" price among the variants, if any is discounted. */
   compareAtPrice?: Money;
   available: boolean;
+  /** Units left in total; only present when 1 to `LOW_STOCK_THRESHOLD` remain on a tracked product. */
+  lowStock?: number;
 }
 
 export interface VariantInput {
@@ -163,4 +177,6 @@ export interface ProductsQuery extends PageQuery {
   /** Slug of a category; includes its sub-categories. */
   category?: string;
   sort?: ProductSort;
+  /** Text to look for in the product name. Between `PRODUCT_SEARCH.minLength` and `maxLength` characters. */
+  q?: string;
 }

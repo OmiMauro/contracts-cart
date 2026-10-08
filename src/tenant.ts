@@ -1,4 +1,6 @@
 import type { Id, IsoDate, Money } from './common.js';
+import type { HomeBlock } from './home.js';
+import type { PaymentSettings } from './payments.js';
 
 export enum TenantStatus {
   Pending = 'pending',
@@ -130,12 +132,36 @@ export const STOREFRONT_TEMPLATE_PRESETS: Record<StorefrontTemplate, StorefrontT
   },
 };
 
+/**
+ * Fonts a store may pick for headings and body text (ADR 0014). A closed list:
+ * the storefront loads them with `next/font`, self-hosted, never from a URL a
+ * store provides.
+ */
+export const THEME_FONTS = [
+  'inter',
+  'geist',
+  'manrope',
+  'dm-sans',
+  'plus-jakarta-sans',
+  'space-grotesk',
+  'poppins',
+  'montserrat',
+  'instrument-serif',
+  'playfair-display',
+  'lora',
+] as const;
+export type ThemeFont = (typeof THEME_FONTS)[number];
+
 export const MAX_DOMAINS = 10;
 
 export interface Theme {
   template: StorefrontTemplate;
   colors: ThemeColors;
   radius: ThemeRadius;
+  /** Replaces the heading font of the template. Absent: the template's. */
+  fontHeading?: ThemeFont;
+  /** Replaces the body font of the template. Absent: the template's. */
+  fontBody?: ThemeFont;
   logoUrl?: string;
   faviconUrl?: string;
 }
@@ -147,6 +173,11 @@ export interface ShippingSettings {
   /** Flat price of a delivery. */
   deliveryFlatRate: Money;
   deliveryInstructions?: string;
+  /**
+   * Cart subtotal from which the store offers free shipping. Only feeds the
+   * progress bar of the home; it does not change an order's total. Absent: no bar.
+   */
+  freeShippingThreshold?: Money;
 }
 
 export interface Seo {
@@ -171,6 +202,11 @@ export interface StorefrontTenant {
   guestCheckoutEnabled: boolean;
   shipping: ShippingSettings;
   seo: Seo;
+  /**
+   * Blocks of the home, in order. Never empty: a store without a layout of its
+   * own gets `DEFAULT_HOME_LAYOUT` for its template.
+   */
+  homepageLayout: HomeBlock[];
 }
 
 export interface Domain {
@@ -181,6 +217,8 @@ export interface Domain {
 }
 
 export interface Tenant extends StorefrontTenant {
+  /** How the store takes payments; shoppers learn it from `GET /v1/payments`. */
+  payments: PaymentSettings;
   timezone: string;
   platformHost: string;
   domains: Domain[];
@@ -194,6 +232,9 @@ export interface UpdateTenantInput {
     template?: StorefrontTemplate;
     colors?: Partial<ThemeColors>;
     radius?: ThemeRadius;
+    /** `null` goes back to the font of the template. */
+    fontHeading?: ThemeFont | null;
+    fontBody?: ThemeFont | null;
     logoUrl?: string | null;
     faviconUrl?: string | null;
   };
@@ -201,15 +242,33 @@ export interface UpdateTenantInput {
     contactEmail?: string | null;
     contactPhone?: string | null;
     guestCheckoutEnabled?: boolean;
+    payments?: {
+      mercadopago?: { discountPercent?: number };
+      /** `null` clears an optional field. */
+      bankTransfer?: {
+        enabled?: boolean;
+        holderName?: string | null;
+        bankName?: string | null;
+        cbu?: string | null;
+        alias?: string | null;
+        taxId?: string | null;
+        instructions?: string | null;
+        discountPercent?: number;
+        deadlineHours?: number;
+      };
+    };
     shipping?: {
       pickupEnabled?: boolean;
       pickupInstructions?: string | null;
       deliveryEnabled?: boolean;
       deliveryFlatRate?: Money;
       deliveryInstructions?: string | null;
+      freeShippingThreshold?: Money | null;
     };
   };
   seo?: { title?: string | null; description?: string | null };
+  /** Replaces the whole list. An empty list goes back to the default layout. */
+  homepageLayout?: HomeBlock[];
 }
 
 export interface DnsInstruction {
@@ -227,4 +286,9 @@ export interface DomainList {
 export interface AddDomainInput {
   hostname: string;
   isPrimary?: boolean;
+}
+
+export interface UpdateDomainInput {
+  /** Makes this the primary domain. The previous one stops being it. */
+  isPrimary: boolean;
 }

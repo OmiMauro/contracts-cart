@@ -1,4 +1,5 @@
 import type { Id, Money } from './common.js';
+import type { AppliedCoupon } from './coupons.js';
 
 export const CART_LIMITS = { items: 100, quantity: 99 } as const;
 
@@ -32,6 +33,12 @@ export interface Cart {
   itemCount: number;
   /** Sum of the lines that can be bought. */
   subtotal: Money;
+  /** The coupon in the cart, if any, with what it takes off. */
+  coupon?: AppliedCoupon;
+  /** What the coupon takes off the subtotal; 0 without one. */
+  discount: Money;
+  /** `subtotal` minus `discount`. Shipping and payment discounts come at checkout. */
+  total: Money;
   currency: string;
   /** True when every line can be bought in the quantity asked. */
   purchasable: boolean;

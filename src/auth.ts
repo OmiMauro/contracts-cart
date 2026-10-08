@@ -40,6 +40,22 @@ export interface SessionTokenInput {
   refreshToken: string;
 }
 
+/** Asks for a password-reset email. The answer never says whether the email exists. */
+export interface PasswordResetRequestInput {
+  audience: Audience;
+  email: string;
+}
+
+/** Sets a new password with the token from the email. */
+export interface PasswordResetRedemptionInput {
+  /** The token in the link of the email. Valid once, for one hour. */
+  token: string;
+  password: string;
+}
+
+/** How long a password-reset link works. */
+export const PASSWORD_RESET_TTL_MINUTES = 60;
+
 export interface AccessToken {
   accessToken: string;
   /** Seconds until the access token expires. */
