@@ -11,4 +11,5 @@ export * from './media.js';
 export * from './newsletter.js';
 export * from './orders.js';
 export * from './payments.js';
+export * from './shipping.js';
 export * from './tenant.js';

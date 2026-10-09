@@ -1,6 +1,7 @@
 import type { Id, IsoDate, Money } from './common.js';
 import type { HomeBlock } from './home.js';
 import type { PaymentSettings } from './payments.js';
+import type { ShippingBox, ShippingRule, ShippingRuleInput } from './shipping.js';
 
 export enum TenantStatus {
   Pending = 'pending',
@@ -198,10 +199,24 @@ export interface ShippingSettings {
   deliveryFlatRate: Money;
   deliveryInstructions?: string;
   /**
-   * Cart subtotal from which the store offers free shipping. Only feeds the
-   * progress bar of the home; it does not change an order's total. Absent: no bar.
+   * Cart subtotal (before discounts) from which delivery is free. It feeds the
+   * progress bar of the home and the checkout applies it to the order's shipping.
+   * Absent: no bar and no free shipping. Replaced by shipping rules (ADR 0018).
    */
   freeShippingThreshold?: Money;
+  /** The seller agrees the shipping afterwards (freight, a courier of their own). */
+  arrangedEnabled: boolean;
+  arrangedInstructions?: string;
+  /** Days the store needs to prepare an order before it leaves. Added to every delivery time. */
+  handlingDays: number;
+}
+
+/** What only staff may know about the store's shipping. */
+export interface ShippingConfig {
+  /** Length × width × height ÷ divisor = volumetric kilos. */
+  volumetricDivisor: number;
+  boxes: ShippingBox[];
+  rules: ShippingRule[];
 }
 
 export interface Seo {
@@ -245,6 +260,7 @@ export interface Domain {
 export interface Tenant extends StorefrontTenant {
   /** How the store takes payments; shoppers learn it from `GET /v1/payments`. */
   payments: PaymentSettings;
+  shippingConfig: ShippingConfig;
   timezone: string;
   platformHost: string;
   domains: Domain[];
@@ -290,6 +306,14 @@ export interface UpdateTenantInput {
       deliveryFlatRate?: Money;
       deliveryInstructions?: string | null;
       freeShippingThreshold?: Money | null;
+      arrangedEnabled?: boolean;
+      arrangedInstructions?: string | null;
+      handlingDays?: number;
+      volumetricDivisor?: number;
+      /** Replaces the whole list. */
+      boxes?: ShippingBox[];
+      /** Replaces the whole list. */
+      rules?: ShippingRuleInput[];
     };
     /** `null` clears a policy, which removes its page. */
     policies?: Partial<Record<PolicyKey, string | null>>;

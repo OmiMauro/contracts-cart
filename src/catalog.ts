@@ -1,4 +1,5 @@
 import type { Id, IsoDate, Money, PageQuery } from './common.js';
+import type { ProductShipping, ProductShippingInput } from './shipping.js';
 
 export enum ProductStatus {
   Draft = 'draft',
@@ -16,6 +17,8 @@ export const PRODUCT_SEARCH = {
   minLength: 2,
   maxLength: 80,
 } as const;
+
+export const PRICE_TIER_LIMIT = 5;
 
 export const PRODUCT_LIMITS = {
   variants: 100,
@@ -96,6 +99,14 @@ export interface OptionValue {
   value: string;
 }
 
+/** The unit price from this quantity on, e.g. `{ minQuantity: 10, price: 8000 }`. */
+export interface PriceTier {
+  /** Whole, 2 or more, and growing from one tier to the next. */
+  minQuantity: number;
+  /** Less than the variant's price, and falling from one tier to the next. */
+  price: Money;
+}
+
 /** A variant as shoppers see it: active ones only, no stock counts, no SKU. */
 export interface StorefrontVariant {
   id: Id;
@@ -107,6 +118,8 @@ export interface StorefrontVariant {
   available: boolean;
   weightGrams?: number;
   dimensionsMm?: Dimensions;
+  /** Cheaper unit prices for buying more of this variant. Empty: one price. */
+  priceTiers: PriceTier[];
 }
 
 /** A variant as staff sees it: the public view plus what only staff may know. */
@@ -143,6 +156,7 @@ export interface Product extends StorefrontProduct {
   categoryIds: Id[];
   /** When false, stock is not checked nor decremented at checkout. */
   trackInventory: boolean;
+  shipping: ProductShipping;
   publishedAt?: IsoDate;
   createdAt: IsoDate;
   updatedAt: IsoDate;
@@ -186,6 +200,8 @@ export interface VariantInput {
   weightGrams?: number | null;
   /** All three sides or none. Omit it to leave the value as it is; `null` clears it. */
   dimensionsMm?: Dimensions | null;
+  /** Omit it to leave the tiers as they are; `[]` removes them. */
+  priceTiers?: PriceTier[];
 }
 
 export interface CreateProductInput {
@@ -202,6 +218,8 @@ export interface CreateProductInput {
   options?: ProductOption[];
   variants: VariantInput[];
   trackInventory?: boolean;
+  /** Omit a field to leave it as it is. */
+  shipping?: ProductShippingInput;
   seoTitle?: string | null;
   seoDescription?: string | null;
 }

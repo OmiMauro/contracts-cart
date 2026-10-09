@@ -1,6 +1,12 @@
 import type { Id, IsoDate, Money, PageQuery } from './common.js';
 import type { Address, AddressInput } from './customers.js';
 import type { BankTransferDetails } from './payments.js';
+import type {
+  OrderShipping,
+  ShipmentEvent,
+  ShipmentStatus,
+  StorefrontOrderShipping,
+} from './shipping.js';
 
 export enum OrderStatus {
   PendingPayment = 'pending_payment',
@@ -140,6 +146,10 @@ export interface ShipmentInput {
 
 export interface Shipment extends ShipmentInput {
   shippedAt?: IsoDate;
+  /** Set when the carrier knows the parcel. */
+  status?: ShipmentStatus;
+  /** Newest last. */
+  events?: ShipmentEvent[];
 }
 
 export enum PaymentAlertCode {
@@ -178,6 +188,8 @@ export interface StorefrontOrder {
   payment: OrderPayment;
   shippingMethod: ShippingMethod;
   shippingAddress?: Address;
+  /** What the buyer chose and paid. Absent on orders placed before quotes existed. */
+  shipping?: StorefrontOrderShipping;
   /** Present once the order has been shipped with tracking information. */
   shipment?: Shipment;
   customerNote?: string;
@@ -189,6 +201,7 @@ export interface StorefrontOrder {
 /** An order as staff sees it. */
 export interface Order extends StorefrontOrder {
   customerId?: Id;
+  shipping?: OrderShipping;
   payment: OrderPaymentDetails;
   statusHistory: OrderStatusChange[];
   /** The states this order can be moved to by hand. */

@@ -82,6 +82,19 @@ export enum ErrorCode {
   PaymentProviderFailed = 'PAYMENT_PROVIDER_FAILED',
   ShipmentNotAllowed = 'SHIPMENT_NOT_ALLOWED',
 
+  /** The quote ran out of time or the cart changed since: ask for a new one. */
+  ShippingQuoteExpired = 'SHIPPING_QUOTE_EXPIRED',
+  ShippingOptionInvalid = 'SHIPPING_OPTION_INVALID',
+  /** A carrier could not be reached; the other options still stand. */
+  CarrierUnavailable = 'CARRIER_UNAVAILABLE',
+  /** A package is over what the carrier takes. */
+  PackageExceedsLimits = 'PACKAGE_EXCEEDS_LIMITS',
+  /** A product that is sold with a carrier has no weight or size. */
+  ProductNeedsPackage = 'PRODUCT_NEEDS_PACKAGE',
+  InvalidShippingRule = 'INVALID_SHIPPING_RULE',
+  InvalidRateTable = 'INVALID_RATE_TABLE',
+  InvalidPriceTiers = 'INVALID_PRICE_TIERS',
+
   InvalidHostname = 'INVALID_HOSTNAME',
   DomainTaken = 'DOMAIN_TAKEN',
   DomainLimitReached = 'DOMAIN_LIMIT_REACHED',
