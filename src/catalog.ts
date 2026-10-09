@@ -148,7 +148,12 @@ export interface VariantInput {
   optionValues?: OptionValue[];
   price: Money;
   compareAtPrice?: Money | null;
-  stock: number;
+  /**
+   * Units on hand. Creating: 0 when omitted. Updating an existing variant:
+   * omit it to leave the stock as it is, so an edit of the price or the SKU
+   * never writes back a count that sales changed in the meantime.
+   */
+  stock?: number;
   isActive?: boolean;
 }
 

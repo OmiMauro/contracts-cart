@@ -223,8 +223,14 @@ export interface OrderStats {
   needsAttention: number;
 }
 
+export const ORDER_SEARCH = { minLength: 2, maxLength: 80 } as const;
+
 export interface OrdersQuery extends PageQuery {
   status?: OrderStatus;
+  /** Staff only: an order number, a buyer's email, or the start of their name. */
+  q?: string;
+  /** Staff only: the orders of one registered shopper. */
+  customerId?: Id;
   /** Staff only: just the orders whose payment needs a look. */
   attention?: boolean;
   /** Staff only: by how the order is paid and the state of that payment. */
@@ -232,6 +238,10 @@ export interface OrdersQuery extends PageQuery {
   paymentStatus?: PaymentStatus;
 }
 
+/**
+ * Staff move an order to any of the manual states. A buyer (signed in, or
+ * holding the order's token) may only cancel it, and only while it waits for payment.
+ */
 export interface ChangeOrderStatusInput {
   status: ManualOrderStatus;
   note?: string;

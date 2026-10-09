@@ -3,6 +3,12 @@ import type { AppliedCoupon } from './coupons.js';
 
 export const CART_LIMITS = { items: 100, quantity: 99 } as const;
 
+export enum CartStatus {
+  Active = 'active',
+  /** Reserved: today a cart is deleted once it becomes an order. */
+  Converted = 'converted',
+}
+
 export interface SetCartItemInput {
   productId: Id;
   /** The quantity wanted, not an increment. */

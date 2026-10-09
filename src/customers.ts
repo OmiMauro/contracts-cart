@@ -1,5 +1,5 @@
 import type { SessionTokens } from './auth.js';
-import type { Id, IsoDate } from './common.js';
+import type { Id, IsoDate, PageQuery } from './common.js';
 
 export enum CustomerStatus {
   Active = 'active',
@@ -36,6 +36,26 @@ export interface Customer {
   marketingOptIn: boolean;
   addresses: Address[];
   createdAt: IsoDate;
+}
+
+/** A shopper as the store's staff sees them. */
+export interface StaffCustomer extends Customer {
+  status: CustomerStatus;
+  lastLoginAt?: IsoDate;
+}
+
+export const CUSTOMER_SEARCH = { minLength: 2, maxLength: 80 } as const;
+
+/** Staff only. */
+export interface CustomersQuery extends PageQuery {
+  /** Email (from the start) or name. */
+  q?: string;
+  status?: CustomerStatus;
+}
+
+/** Staff only: blocks or restores a shopper's account. Disabling ends their sessions. */
+export interface UpdateCustomerStatusInput {
+  status: CustomerStatus;
 }
 
 export interface RegisterCustomerInput {

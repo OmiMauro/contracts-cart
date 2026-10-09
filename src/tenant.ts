@@ -166,6 +166,30 @@ export interface Theme {
   faviconUrl?: string;
 }
 
+export const POLICY_KEYS = ['shipping', 'returns', 'privacy', 'terms'] as const;
+export type PolicyKey = (typeof POLICY_KEYS)[number];
+
+export const POLICY_LIMITS = {
+  text: 5000,
+  businessName: 120,
+  taxId: 20,
+  address: 200,
+} as const;
+
+/**
+ * The store's policies, as plain text (paragraphs separated by blank lines).
+ * Each one has a public page when it is set; the footer links to them.
+ */
+export type PolicySettings = Partial<Record<PolicyKey, string>>;
+
+/** Who sells: shown on the policy pages and the footer, as consumer law asks. */
+export interface LegalSettings {
+  businessName?: string;
+  /** CUIT. */
+  taxId?: string;
+  address?: string;
+}
+
 export interface ShippingSettings {
   pickupEnabled: boolean;
   pickupInstructions?: string;
@@ -201,6 +225,8 @@ export interface StorefrontTenant {
   contactPhone?: string;
   guestCheckoutEnabled: boolean;
   shipping: ShippingSettings;
+  policies: PolicySettings;
+  legal: LegalSettings;
   seo: Seo;
   /**
    * Blocks of the home, in order. Never empty: a store without a layout of its
@@ -265,6 +291,9 @@ export interface UpdateTenantInput {
       deliveryInstructions?: string | null;
       freeShippingThreshold?: Money | null;
     };
+    /** `null` clears a policy, which removes its page. */
+    policies?: Partial<Record<PolicyKey, string | null>>;
+    legal?: { businessName?: string | null; taxId?: string | null; address?: string | null };
   };
   seo?: { title?: string | null; description?: string | null };
   /** Replaces the whole list. An empty list goes back to the default layout. */

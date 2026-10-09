@@ -9,11 +9,15 @@ export enum ErrorCode {
   Forbidden = 'FORBIDDEN',
   NotFound = 'NOT_FOUND',
   Conflict = 'CONFLICT',
+  /** The record changed while it was being edited; reload it and try again. */
+  ConcurrentUpdate = 'CONCURRENT_UPDATE',
   RateLimited = 'RATE_LIMITED',
   Internal = 'INTERNAL_ERROR',
 
   TenantHostRequired = 'TENANT_HOST_REQUIRED',
   TenantNotFound = 'TENANT_NOT_FOUND',
+  /** The operator suspended the store: nothing is served until it is restored. */
+  TenantSuspended = 'TENANT_SUSPENDED',
 
   EmailTaken = 'EMAIL_TAKEN',
   LastOwner = 'LAST_OWNER',
@@ -66,6 +70,8 @@ export enum ErrorCode {
   CouponMinSubtotal = 'COUPON_MIN_SUBTOTAL',
   CouponCodeTaken = 'COUPON_CODE_TAKEN',
   CouponInUse = 'COUPON_IN_USE',
+  /** The link to leave a newsletter does not match the email. */
+  InvalidUnsubscribeToken = 'INVALID_UNSUBSCRIBE_TOKEN',
   InvalidCouponValue = 'INVALID_COUPON_VALUE',
   /** The payment provider refused or could not be reached; nothing changed. */
   PaymentProviderFailed = 'PAYMENT_PROVIDER_FAILED',
@@ -76,7 +82,6 @@ export enum ErrorCode {
   DomainLimitReached = 'DOMAIN_LIMIT_REACHED',
   InvalidOAuthCallback = 'INVALID_OAUTH_CALLBACK',
   InvalidCursor = 'INVALID_CURSOR',
-  InvalidSlug = 'INVALID_SLUG',
 
   DuplicateBlockId = 'DUPLICATE_BLOCK_ID',
   InvalidHomeBlock = 'INVALID_HOME_BLOCK',
