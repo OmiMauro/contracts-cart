@@ -244,6 +244,8 @@ export interface StorefrontOrderShipping {
 
 /** The same choice as staff sees it, with what it costs the store. */
 export interface OrderShipping extends StorefrontOrderShipping {
+  /** The option of the quote the buyer picked, e.g. `correo_argentino:D-CP`. */
+  optionId: string;
   packages: ShippingPackage[];
   /** What the carrier (or the rate table) charges the store. Never shown to buyers. */
   carrierCost: Money;
@@ -311,4 +313,29 @@ export interface ShippingQuote {
   options: ShippingOption[];
   /** After this the cart must be quoted again. */
   expiresAt?: IsoDate;
+}
+
+// --- the store's account at a carrier
+
+export enum ShippingAccountStatus {
+  Connected = 'connected',
+  /** The carrier stopped accepting the account: connect it again. */
+  Invalid = 'invalid',
+}
+
+/** What the store proves it owns: its MiCorreo email and password. They are used once and never stored. */
+export interface ConnectShippingAccountInput {
+  email: string;
+  password: string;
+  /** Postal code the parcels leave from. */
+  originPostalCode: string;
+}
+
+export interface ShippingAccount {
+  carrier: ShippingCarrier;
+  status: ShippingAccountStatus;
+  originPostalCode: string;
+  /** The carrier's id for the store: staff only. */
+  customerId: string;
+  connectedAt: IsoDate;
 }

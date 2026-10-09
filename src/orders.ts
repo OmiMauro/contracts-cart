@@ -153,6 +153,10 @@ export interface ShipmentInput {
 
 export interface Shipment extends ShipmentInput {
   shippedAt?: IsoDate;
+  /** The id the order has at the carrier, once it was imported there. */
+  externalId?: string;
+  /** When the order was imported into the carrier's platform. */
+  importedAt?: IsoDate;
   /** Set when the carrier knows the parcel. */
   status?: ShipmentStatus;
   /** Newest last. */
@@ -287,6 +291,8 @@ export interface CheckoutInput {
    */
   shippingQuoteId?: Id;
   shippingOptionId?: string;
+  /** The branch of the carrier to collect it at, for an option of `branch_pickup`. */
+  shippingBranchId?: string;
   /**
    * Without a quote, `pickup` or `delivery` at the store's flat rate. With a
    * quote it is optional, and if given it must be the option's.

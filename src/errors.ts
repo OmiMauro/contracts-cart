@@ -87,6 +87,10 @@ export enum ErrorCode {
   ShippingOptionInvalid = 'SHIPPING_OPTION_INVALID',
   /** A carrier could not be reached; the other options still stand. */
   CarrierUnavailable = 'CARRIER_UNAVAILABLE',
+  /** The carrier refused the credentials of the store. */
+  CarrierAuthFailed = 'CARRIER_AUTH_FAILED',
+  /** The order cannot be sent to the carrier: it was not quoted with it, or it was already imported. */
+  ShipmentImportNotAllowed = 'SHIPMENT_IMPORT_NOT_ALLOWED',
   /** A package is over what the carrier takes. */
   PackageExceedsLimits = 'PACKAGE_EXCEEDS_LIMITS',
   /** A product that is sold with a carrier has no weight or size. */
