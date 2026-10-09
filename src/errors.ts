@@ -93,6 +93,8 @@ export enum ErrorCode {
   ProductNeedsPackage = 'PRODUCT_NEEDS_PACKAGE',
   InvalidShippingRule = 'INVALID_SHIPPING_RULE',
   InvalidRateTable = 'INVALID_RATE_TABLE',
+  RateTableNameTaken = 'RATE_TABLE_NAME_TAKEN',
+  RateTableLimitReached = 'RATE_TABLE_LIMIT_REACHED',
   InvalidPriceTiers = 'INVALID_PRICE_TIERS',
 
   InvalidHostname = 'INVALID_HOSTNAME',

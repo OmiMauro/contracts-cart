@@ -41,6 +41,10 @@ export enum ShippingMethod {
   /** The buyer collects the order at the store. */
   Pickup = 'pickup',
   Delivery = 'delivery',
+  /** The buyer collects the order at a branch of the carrier. */
+  BranchPickup = 'branch_pickup',
+  /** The seller and the buyer agree how it gets there, after the sale. */
+  Arranged = 'arranged',
 }
 
 export enum OrderActor {

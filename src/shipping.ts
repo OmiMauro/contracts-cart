@@ -1,4 +1,5 @@
 import type { Id, IsoDate, Money } from './common.js';
+import type { ShippingMethod } from './orders.js';
 
 // Shipping with carriers, rate tables and per-store rules. See ADR 0018.
 // Weights are whole grams and sizes whole millimetres, like money is whole centavos.
@@ -181,7 +182,7 @@ export interface RateRow {
   /** This row covers packages up to this billable weight. */
   maxWeightGrams: number;
   price: Money;
-  /** Delivery time, in days, as the store promises it. */
+  /** Delivery time, in business days, as the store promises it. */
   etaDays?: { min: number; max: number };
 }
 
@@ -248,7 +249,7 @@ export interface OrderShipping extends StorefrontOrderShipping {
   carrierCost: Money;
   /** What the products gave towards it. */
   subsidy: Money;
-  /** What the store's rules took off. */
+  /** What the store's rules took off. Negative when a flat price charged more than the carrier. */
   ruleDiscount: Money;
   /** Rules that changed the price. */
   appliedRuleIds: Id[];
@@ -260,4 +261,50 @@ export interface ShipmentEvent {
   status: ShipmentStatus;
   description: string;
   location?: string;
+}
+
+// --- quotes
+
+export interface ShippingQuoteItemInput {
+  productId: Id;
+  variantId: Id;
+  quantity: number;
+}
+
+export interface ShippingQuoteInput {
+  postalCode: string;
+  /** ISO 3166-2:AR, e.g. `AR-B`. */
+  province: string;
+  /**
+   * Quote these instead of the cart, for the shipping calculator of a
+   * product page. Nothing is saved, so the result has no `id`.
+   */
+  items?: ShippingQuoteItemInput[];
+}
+
+/** One way to get the order, as the buyer sees it. */
+export interface ShippingOption {
+  /** What checkout is told to pick it; unique within the quote. */
+  id: string;
+  method: ShippingMethod;
+  /** `null` for pickup, the store's flat rate and a delivery agreed afterwards. */
+  carrier: ShippingCarrier | null;
+  /** What to call it: the name of the rate table, of the service. */
+  service?: string;
+  branch?: ShippingBranch;
+  /** What the buyer pays. */
+  price: Money;
+  etaDays?: { min: number; max: number };
+  /** Earliest and latest arrival if the order is placed now. Absent when the time is not known. */
+  estimatedDelivery?: { from: IsoDate; to: IsoDate };
+}
+
+export interface ShippingQuote {
+  /** Absent when the quote was asked for `items` and nothing was saved. */
+  id?: Id;
+  destination: { postalCode: string; province: string };
+  /** Cheapest first. Empty when the store cannot send there. */
+  options: ShippingOption[];
+  /** After this the cart must be quoted again. */
+  expiresAt?: IsoDate;
 }
