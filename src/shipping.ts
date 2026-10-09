@@ -295,8 +295,12 @@ export interface ShippingOption {
   /** What the buyer pays. */
   price: Money;
   etaDays?: { min: number; max: number };
-  /** Earliest and latest arrival if the order is placed now. Absent when the time is not known. */
-  estimatedDelivery?: { from: IsoDate; to: IsoDate };
+  /**
+   * Earliest and latest day it can arrive if the order is placed now, as calendar
+   * dates (`2026-10-15`) of the store's time zone, so every buyer reads the same day.
+   * Absent when the time is not known.
+   */
+  estimatedDelivery?: { from: string; to: string };
 }
 
 export interface ShippingQuote {
