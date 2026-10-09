@@ -80,6 +80,7 @@ export interface OrderItem {
   name: string;
   variantLabel?: string;
   imageUrl?: string;
+  /** The price of one unit, with the price tier of the quantity bought already applied. */
   unitPrice: Money;
   quantity: number;
   total: Money;
@@ -277,8 +278,19 @@ export interface RefundInput {
 
 export interface CheckoutInput {
   contact: OrderContact;
-  shippingMethod: ShippingMethod;
-  /** Required for deliveries. */
+  /**
+   * The quote of the cart (`POST /v1/shipping-quotes`) and the option the buyer
+   * picked from it. The price and the method come from the option, never from
+   * the client. Send both or neither.
+   */
+  shippingQuoteId?: Id;
+  shippingOptionId?: string;
+  /**
+   * Without a quote, `pickup` or `delivery` at the store's flat rate. With a
+   * quote it is optional, and if given it must be the option's.
+   */
+  shippingMethod?: ShippingMethod;
+  /** Required for deliveries and for a delivery agreed afterwards, and it must be the quoted destination. */
   shippingAddress?: AddressInput;
   customerNote?: string;
   /**
