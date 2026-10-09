@@ -83,6 +83,8 @@ export interface OrderItem {
   /** The price of one unit, with the price tier of the quantity bought already applied. */
   unitPrice: Money;
   quantity: number;
+  /** The price tier `unitPrice` came from, if any. */
+  tierMinQuantity?: number;
   total: Money;
 }
 

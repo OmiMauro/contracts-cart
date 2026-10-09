@@ -1,7 +1,9 @@
+import type { PriceTier } from './catalog.js';
 import type { Id, Money } from './common.js';
 import type { AppliedCoupon } from './coupons.js';
 
-export const CART_LIMITS = { items: 100, quantity: 99 } as const;
+/** `quantity` is per line: enough for a wholesale order. */
+export const CART_LIMITS = { items: 100, quantity: 999 } as const;
 
 export enum CartStatus {
   Active = 'active',
@@ -24,9 +26,13 @@ export interface CartLine {
   variantLabel?: string;
   imageUrl?: string;
   quantity: number;
-  /** The current price, not the one when it was added. */
+  /** The current price for this quantity, not the one when it was added. */
   unitPrice: Money;
   lineTotal: Money;
+  /** The price tier that `unitPrice` comes from. Absent when the variant is charged its full price. */
+  tierMinQuantity?: number;
+  /** What the next tier would charge, to tell the buyer what adding more units would save. */
+  nextTier?: PriceTier;
   /** False when the product or variant can no longer be bought. */
   available: boolean;
   /** The most units that can be bought right now. */
