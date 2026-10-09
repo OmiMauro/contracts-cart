@@ -45,6 +45,11 @@ export enum ErrorCode {
   FileTooLarge = 'FILE_TOO_LARGE',
   UnsupportedImageType = 'UNSUPPORTED_IMAGE_TYPE',
   ForeignMediaUrl = 'FOREIGN_MEDIA_URL',
+  /** The bytes look like an image but cannot be decoded. */
+  ImageUnreadable = 'IMAGE_UNREADABLE',
+  ImageDimensionsTooLarge = 'IMAGE_DIMENSIONS_TOO_LARGE',
+  /** A photo is tagged with an option value the product does not have. */
+  InvalidImageOption = 'INVALID_IMAGE_OPTION',
 
   CartTokenRequired = 'CART_TOKEN_REQUIRED',
   CartFull = 'CART_FULL',

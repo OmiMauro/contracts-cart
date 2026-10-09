@@ -23,6 +23,10 @@ export const PRODUCT_LIMITS = {
   options: 3,
   optionValues: 50,
   categories: 20,
+  specs: 30,
+  specName: 40,
+  specValue: 200,
+  brand: 60,
 } as const;
 
 // --- categories
@@ -61,6 +65,24 @@ export type UpdateCategoryInput = Partial<CreateCategoryInput>;
 export interface ProductImage {
   url: string;
   alt?: string;
+  /** Pixels of the stored file; layout hints only. */
+  width?: number;
+  height?: number;
+  /** Shown first when shoppers choose this option value, e.g. `{ name: 'Color', value: 'Rojo' }`. */
+  option?: OptionValue;
+}
+
+/** A line of a product's technical sheet, e.g. `{ name: 'Material', value: 'Algodón' }`. */
+export interface ProductSpec {
+  name: string;
+  value: string;
+}
+
+/** Package size in millimetres. */
+export interface Dimensions {
+  length: number;
+  width: number;
+  height: number;
 }
 
 /** An axis shoppers choose from, e.g. `{ name: 'Talle', values: ['S', 'M'] }`. */
@@ -83,6 +105,8 @@ export interface StorefrontVariant {
   compareAtPrice?: Money;
   /** Whether it can be added to the cart right now. */
   available: boolean;
+  weightGrams?: number;
+  dimensionsMm?: Dimensions;
 }
 
 /** A variant as staff sees it: the public view plus what only staff may know. */
@@ -98,6 +122,8 @@ export interface StorefrontProduct {
   name: string;
   slug: string;
   description?: string;
+  brand?: string;
+  specs: ProductSpec[];
   images: ProductImage[];
   options: ProductOption[];
   variants: StorefrontVariant[];
@@ -127,12 +153,13 @@ export interface StorefrontProductSummary {
   id: Id;
   name: string;
   slug: string;
+  brand?: string;
   image?: ProductImage;
   /** The second photo, shown when a shopper hovers the card. */
   hoverImage?: ProductImage;
   priceMin: Money;
   priceMax: Money;
-  /** Highest "was" price among the variants, if any is discounted. */
+  /** The "was" price of the cheapest variant, if that one is discounted. */
   compareAtPrice?: Money;
   available: boolean;
   /** Units left in total; only present when 1 to `LOW_STOCK_THRESHOLD` remain on a tracked product. */
@@ -155,6 +182,10 @@ export interface VariantInput {
    */
   stock?: number;
   isActive?: boolean;
+  /** Omit it to leave the value as it is; `null` clears it. */
+  weightGrams?: number | null;
+  /** All three sides or none. Omit it to leave the value as it is; `null` clears it. */
+  dimensionsMm?: Dimensions | null;
 }
 
 export interface CreateProductInput {
@@ -162,6 +193,8 @@ export interface CreateProductInput {
   /** Derived from the name when omitted. */
   slug?: string;
   description?: string | null;
+  brand?: string | null;
+  specs?: ProductSpec[];
   status?: ProductStatus;
   categoryIds?: Id[];
   images?: ProductImage[];
@@ -184,4 +217,16 @@ export interface ProductsQuery extends PageQuery {
   sort?: ProductSort;
   /** Text to look for in the product name. Between `PRODUCT_SEARCH.minLength` and `maxLength` characters. */
   q?: string;
+  /** Exact brand, as returned by `GET /v1/brands`. */
+  brand?: string;
+}
+
+export interface BrandsQuery {
+  /** Slug of a category; includes its sub-categories. */
+  category?: string;
+}
+
+/** Distinct brands, sorted by name. Shoppers see those of published products. */
+export interface BrandList {
+  data: string[];
 }
