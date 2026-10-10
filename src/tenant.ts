@@ -215,12 +215,12 @@ const PRESETS = {
   },
   mercado: {
     name: 'Mercado',
-    description: 'Densa, con el buscador al frente. Para catálogos grandes.',
+    description: 'Densa, con el buscador al frente y más productos por fila. Para catálogos grandes.',
     palettes: [
       {
         key: 'naranja',
         name: 'Naranja',
-        colors: colors('#c2410c/#ffffff #fff1e6/#7c2d12 #1d4ed8/#ffffff #ffffff/#1f2937 #f5f5f4/#5b6472 #e5e7eb'),
+        colors: colors('#c2410c/#ffffff #fff1e6/#7c2d12 #1f2937/#ffffff #ffffff/#1f2937 #f5f5f4/#5b6472 #e5e7eb'),
         radius: 'md',
       },
       {
@@ -311,7 +311,7 @@ const PRESETS = {
   },
   clasica: {
     name: 'Clásica',
-    description: 'Serif tradicional y tonos profundos. Para vinos, librerías y sastrería.',
+    description: 'Serif tradicional, tarjetas enmarcadas y tonos profundos. Para vinos, librerías y sastrería.',
     palettes: [
       {
         key: 'burdeos',
