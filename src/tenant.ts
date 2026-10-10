@@ -41,7 +41,18 @@ export type ThemeColors = Record<ThemeColorToken, string>;
  * typography, layout of the header, home and product cards, and a few
  * palettes to choose from. The store can also set its own colors and radius.
  */
-export const STOREFRONT_TEMPLATES = ['editorial', 'suave', 'audaz', 'oscura'] as const;
+export const STOREFRONT_TEMPLATES = [
+  'editorial',
+  'suave',
+  'audaz',
+  'oscura',
+  'galeria',
+  'mercado',
+  'tecnica',
+  'natural',
+  'pop',
+  'clasica',
+] as const;
 export type StorefrontTemplate = (typeof STOREFRONT_TEMPLATES)[number];
 
 export const DEFAULT_STOREFRONT_TEMPLATE: StorefrontTemplate = 'suave';
@@ -175,6 +186,150 @@ const PRESETS = {
         name: 'Marfil',
         colors: colors('#141414/#faf8f3 #ebe7de/#141414 #8a6d2f/#ffffff #faf8f3/#141414 #f1ede4/#5f5a51 #e1dccf'),
         radius: 'md',
+      },
+    ],
+  },
+  galeria: {
+    name: 'Galería',
+    description: 'Fotos grandes y texto mínimo. Para arte, fotografía y objetos de autor.',
+    palettes: [
+      {
+        key: 'blanco',
+        name: 'Blanco',
+        colors: colors('#111111/#ffffff #f2f2f2/#111111 #111111/#ffffff #ffffff/#111111 #f7f7f7/#6b6b6b #e5e5e5'),
+        radius: 'none',
+      },
+      {
+        key: 'lino',
+        name: 'Lino',
+        colors: colors('#2b2622/#f8f5f0 #ece7df/#2b2622 #a16207/#ffffff #f8f5f0/#2b2622 #f1ece4/#6a6259 #e3dccf'),
+        radius: 'none',
+      },
+      {
+        key: 'carbon',
+        name: 'Carbón',
+        colors: colors('#f4f4f4/#121212 #1f1f1f/#f4f4f4 #f4f4f4/#121212 #121212/#f4f4f4 #191919/#a3a3a3 #2a2a2a'),
+        radius: 'none',
+      },
+    ],
+  },
+  mercado: {
+    name: 'Mercado',
+    description: 'Densa, con el buscador al frente. Para catálogos grandes.',
+    palettes: [
+      {
+        key: 'naranja',
+        name: 'Naranja',
+        colors: colors('#c2410c/#ffffff #fff1e6/#7c2d12 #1d4ed8/#ffffff #ffffff/#1f2937 #f5f5f4/#5b6472 #e5e7eb'),
+        radius: 'md',
+      },
+      {
+        key: 'azul',
+        name: 'Azul',
+        colors: colors('#1d4ed8/#ffffff #e0e9ff/#1e3a8a #f59e0b/#1f2937 #f8fafc/#0f172a #eef2f7/#56637a #dbe2ea'),
+        radius: 'md',
+      },
+      {
+        key: 'verde',
+        name: 'Verde',
+        colors: colors('#15803d/#ffffff #e6f4ea/#14532d #b45309/#ffffff #ffffff/#1a2e22 #f3f7f4/#56655b #dde7e0'),
+        radius: 'md',
+      },
+    ],
+  },
+  tecnica: {
+    name: 'Técnica',
+    description: 'Precisa, con los números en monoespaciada. Para tecnología y herramientas.',
+    palettes: [
+      {
+        key: 'grafito',
+        name: 'Grafito',
+        colors: colors('#18181b/#ffffff #f4f4f5/#18181b #15803d/#ffffff #fafafa/#18181b #f4f4f5/#52525b #e4e4e7'),
+        radius: 'sm',
+      },
+      {
+        key: 'electrico',
+        name: 'Eléctrico',
+        colors: colors('#2563eb/#ffffff #e8efff/#1e3a8a #0f172a/#ffffff #ffffff/#0f172a #f1f5f9/#56637a #e2e8f0'),
+        radius: 'sm',
+      },
+      {
+        key: 'terminal',
+        name: 'Terminal',
+        colors: colors('#e4e4e7/#09090b #18181b/#e4e4e7 #22c55e/#09090b #09090b/#e4e4e7 #121214/#a1a1aa #27272a'),
+        radius: 'sm',
+      },
+    ],
+  },
+  natural: {
+    name: 'Natural',
+    description: 'Cálida y orgánica, con serif suave y mucho aire. Para cosmética, alimentos y deco.',
+    palettes: [
+      {
+        key: 'salvia',
+        name: 'Salvia',
+        colors: colors('#3f6212/#ffffff #e9efdc/#1a2e05 #7c4a1e/#ffffff #f7f8f2/#1f2a14 #eef1e3/#566049 #dde3cf'),
+        radius: 'lg',
+      },
+      {
+        key: 'arcilla',
+        name: 'Arcilla',
+        colors: colors('#9a3f1f/#ffffff #f5e4da/#4a1d0c #3b5a3a/#ffffff #fbf5ef/#2f2219 #f3e8df/#6f5c4e #e6d5c7'),
+        radius: 'lg',
+      },
+      {
+        key: 'arena',
+        name: 'Arena',
+        colors: colors('#6b5537/#ffffff #efe6d8/#3a2d1c #2f6f6a/#ffffff #faf6ee/#2b241a #f2ece0/#685d4d #e4dac9'),
+        radius: 'lg',
+      },
+    ],
+  },
+  pop: {
+    name: 'Pop',
+    description: 'Colores vivos, mayúsculas y formas redondas. Para marcas jóvenes.',
+    palettes: [
+      {
+        key: 'chicle',
+        name: 'Chicle',
+        colors: colors('#be185d/#ffffff #fce7f3/#831843 #facc15/#1f1f1f #fff7fb/#1f1f1f #fdeaf4/#665560 #f8d4e6'),
+        radius: 'full',
+      },
+      {
+        key: 'citrico',
+        name: 'Cítrico',
+        colors: colors('#4d7c0f/#ffffff #ecfccb/#365314 #f97316/#1a2e05 #fdfdf3/#1a2e05 #f4f8e6/#586447 #e3ecc9'),
+        radius: 'full',
+      },
+      {
+        key: 'violeta',
+        name: 'Violeta',
+        colors: colors('#7c3aed/#ffffff #ede9fe/#4c1d95 #06b6d4/#082f49 #fbfaff/#1e1b4b #f1eefb/#5d5a7a #e2dcf6'),
+        radius: 'full',
+      },
+    ],
+  },
+  clasica: {
+    name: 'Clásica',
+    description: 'Serif tradicional y tonos profundos. Para vinos, librerías y sastrería.',
+    palettes: [
+      {
+        key: 'burdeos',
+        name: 'Burdeos',
+        colors: colors('#7f1d1d/#ffffff #f5ebe6/#450a0a #a16207/#ffffff #fdfaf6/#2a1a16 #f6efe8/#6a554e #e8dcd3'),
+        radius: 'sm',
+      },
+      {
+        key: 'marino',
+        name: 'Marino',
+        colors: colors('#1e3a5f/#ffffff #e6ecf3/#0f223a #b45309/#ffffff #fbfbf9/#182230 #f0f2f0/#566070 #dde2e4'),
+        radius: 'sm',
+      },
+      {
+        key: 'botella',
+        name: 'Botella',
+        colors: colors('#14532d/#ffffff #e5efe8/#052e16 #92400e/#ffffff #faf9f4/#142018 #f1f3ec/#525c51 #dfe4d9'),
+        radius: 'sm',
       },
     ],
   },

@@ -167,65 +167,27 @@ export type HomeBlock = { [T in HomeBlockType]: HomeBlockOf<T> }[HomeBlockType];
  * returns it; nothing is written to the database, so improving a preset never
  * needs a migration.
  */
+/** The opening section, the categories and the newest products: what every template starts with. */
+const startingLayout = (alignment: HomeAlignment, shape: HomeShape): HomeBlock[] => [
+  { id: 'portada', type: 'hero', enabled: true, props: { alignment } },
+  { id: 'categorias', type: 'category-grid', enabled: true, props: { shape, categorySlugs: [] } },
+  {
+    id: 'novedades',
+    type: 'product-showcase',
+    enabled: true,
+    props: { source: 'newest', productSlugs: [], limit: 8 },
+  },
+];
+
 export const DEFAULT_HOME_LAYOUT: Record<StorefrontTemplate, HomeBlock[]> = {
-  editorial: [
-    { id: 'portada', type: 'hero', enabled: true, props: { alignment: 'left' } },
-    {
-      id: 'categorias',
-      type: 'category-grid',
-      enabled: true,
-      props: { shape: 'square', categorySlugs: [] },
-    },
-    {
-      id: 'novedades',
-      type: 'product-showcase',
-      enabled: true,
-      props: { source: 'newest', productSlugs: [], limit: 8 },
-    },
-  ],
-  suave: [
-    { id: 'portada', type: 'hero', enabled: true, props: { alignment: 'center' } },
-    {
-      id: 'categorias',
-      type: 'category-grid',
-      enabled: true,
-      props: { shape: 'circle', categorySlugs: [] },
-    },
-    {
-      id: 'novedades',
-      type: 'product-showcase',
-      enabled: true,
-      props: { source: 'newest', productSlugs: [], limit: 8 },
-    },
-  ],
-  audaz: [
-    { id: 'portada', type: 'hero', enabled: true, props: { alignment: 'left' } },
-    {
-      id: 'categorias',
-      type: 'category-grid',
-      enabled: true,
-      props: { shape: 'square', categorySlugs: [] },
-    },
-    {
-      id: 'novedades',
-      type: 'product-showcase',
-      enabled: true,
-      props: { source: 'newest', productSlugs: [], limit: 8 },
-    },
-  ],
-  oscura: [
-    { id: 'portada', type: 'hero', enabled: true, props: { alignment: 'center' } },
-    {
-      id: 'categorias',
-      type: 'category-grid',
-      enabled: true,
-      props: { shape: 'circle', categorySlugs: [] },
-    },
-    {
-      id: 'novedades',
-      type: 'product-showcase',
-      enabled: true,
-      props: { source: 'newest', productSlugs: [], limit: 8 },
-    },
-  ],
+  editorial: startingLayout('left', 'square'),
+  suave: startingLayout('center', 'circle'),
+  audaz: startingLayout('left', 'square'),
+  oscura: startingLayout('center', 'circle'),
+  galeria: startingLayout('left', 'square'),
+  mercado: startingLayout('left', 'square'),
+  tecnica: startingLayout('left', 'square'),
+  natural: startingLayout('center', 'circle'),
+  pop: startingLayout('center', 'circle'),
+  clasica: startingLayout('left', 'square'),
 };
