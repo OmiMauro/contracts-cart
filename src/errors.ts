@@ -67,6 +67,8 @@ export enum ErrorCode {
   /** The action does not apply to the way this order is paid. */
   PaymentMethodMismatch = 'PAYMENT_METHOD_MISMATCH',
   BankTransferIncomplete = 'BANK_TRANSFER_INCOMPLETE',
+  /** The palette belongs to another template than the store's. */
+  PaletteNotInTemplate = 'PALETTE_NOT_IN_TEMPLATE',
   OrderNotPayable = 'ORDER_NOT_PAYABLE',
   InvalidOrderTransition = 'INVALID_ORDER_TRANSITION',
   OrderNotRefundable = 'ORDER_NOT_REFUNDABLE',
