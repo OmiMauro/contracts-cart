@@ -36,6 +36,8 @@ export interface BillingPlan {
   transferFeePercent: number;
   /** Fixed amount per month. */
   monthlyFee: Money;
+  /** While set and in the future, the store is on its free trial. */
+  trialEndsAt?: IsoDate;
 }
 
 export interface FeeEntry {

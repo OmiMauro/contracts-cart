@@ -1,6 +1,6 @@
 {
   "name": "@cart/contracts",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Enums, constants and types of the API contract, shared by rest-api and web-app.",
   "private": true,
   "type": "module",

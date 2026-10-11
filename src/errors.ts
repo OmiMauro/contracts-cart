@@ -111,4 +111,15 @@ export enum ErrorCode {
 
   DuplicateBlockId = 'DUPLICATE_BLOCK_ID',
   InvalidHomeBlock = 'INVALID_HOME_BLOCK',
+
+  /** The slug is one the platform keeps for itself. */
+  SlugReserved = 'SLUG_RESERVED',
+  /** The activation link is wrong, was already used or has expired. */
+  InvalidActivationToken = 'INVALID_ACTIVATION_TOKEN',
+  /** The human-verification check did not pass. */
+  CaptchaFailed = 'CAPTCHA_FAILED',
+  /** This email already has as many unconfirmed stores as allowed. */
+  SignupLimitReached = 'SIGNUP_LIMIT_REACHED',
+  /** Opening stores is switched off on this deployment. */
+  SignupUnavailable = 'SIGNUP_UNAVAILABLE',
 }
