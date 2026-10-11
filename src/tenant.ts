@@ -1,5 +1,5 @@
 import type { Id, IsoDate, Money } from './common.js';
-import type { HomeBlock } from './home.js';
+import type { HomeBlock, HomeBlockInput } from './home.js';
 import type { PaymentSettings } from './payments.js';
 import type { ShippingBox, ShippingRule, ShippingRuleInput } from './shipping.js';
 
@@ -472,8 +472,8 @@ export interface StorefrontTenant {
   legal: LegalSettings;
   seo: Seo;
   /**
-   * Blocks of the home, in order. Never empty: a store without a layout of its
-   * own gets `DEFAULT_HOME_LAYOUT` for its template.
+   * Blocks of the home, in order, each with its variant. Never empty: a store
+   * without a layout of its own gets `DEFAULT_HOME_LAYOUT` for its template.
    */
   homepageLayout: HomeBlock[];
 }
@@ -553,8 +553,11 @@ export interface UpdateTenantInput {
     legal?: { businessName?: string | null; taxId?: string | null; address?: string | null };
   };
   seo?: { title?: string | null; description?: string | null };
-  /** Replaces the whole list. An empty list goes back to the default layout. */
-  homepageLayout?: HomeBlock[];
+  /**
+   * Replaces the whole list. An empty list goes back to the default layout.
+   * A block without a `variant` gets the look it had before variants existed.
+   */
+  homepageLayout?: HomeBlockInput[];
 }
 
 export interface DnsInstruction {
