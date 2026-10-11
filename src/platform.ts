@@ -165,3 +165,17 @@ export interface TenantActivation {
 export interface ResendActivationInput {
   email: string;
 }
+
+/** How many stores the platform's own site lists at most, newest first. */
+export const STORE_DIRECTORY = { maxStores: 60 } as const;
+
+/**
+ * A store as anyone can already see it from outside: its name and where it
+ * lives. Only stores that are open; nothing about their owner, plan or data.
+ */
+export interface StoreListing {
+  name: string;
+  /** The host shoppers use: the store's own domain if it has one. */
+  host: string;
+  url: string;
+}
